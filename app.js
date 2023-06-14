@@ -3,10 +3,11 @@ const bodyParser = require("body-parser");
 const request = require("request");
 const path = require("path");
 const https = require("https");
-require("dotenv").config();
+const dotEnv = require("dotenv");
 
 const app =express();
 app.use(bodyParser.urlencoded({extended: true}));
+dotEnv.config({path:"./config.env"});
 
 //middleware  & static files
 app.use('/asset',express.static('asset'));
@@ -31,10 +32,10 @@ app.post("/",function(req,res){
     };
 
     const jsonData =JSON.stringify(data);
-    const url = process.env.URL_link;
+    const url = process.env.URL_LINK;
     const options = {
         method : "POST",
-        auth : process.env.MailChimp_Api_key
+        auth : process.env.MAILCHIMP_API_KEY
     }
 
     const request = https.request(url,options,function(response){
@@ -64,4 +65,6 @@ app.get("/",function(req,res){
 
 app.listen(process.env.PORT || 3000,function(){
     console.log("Server Started on port 3000...");
+    // console.log(process.env.URL_link);
+    // console.log(process.env.MailChimp_Api_key);
 })
